@@ -18,7 +18,7 @@ class TicketsTblSeeder extends Seeder
         $classes = ['AC', 'AC_B', 'Snigdha', 'S_Chair', 'Shovan'];
         $trains = DB::table('trains_tbl')->get();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             // Pick a real train from trains_tbl so ticket fields match
             $train = $trains->random();
             DB::table('tickets_tbl')->insert([
