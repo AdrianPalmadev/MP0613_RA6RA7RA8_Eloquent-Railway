@@ -20,9 +20,9 @@ class TrainsTblSeeder extends Seeder
             DB::table('trains_tbl')->insert([
                 'train_number' => $faker->unique()->numerify('T###'),
                 'train_name' => $faker->randomElement(['Suborno Express', 'Parabat Express', 'Mahanagar Express', 'Silk City Express', 'Karnaphuli Express']),
-                'arrival_station' => $faker->randomElement($stations),
+                'origin_station' => $faker->randomElement($stations),
                 'destination_station' => $faker->randomElement($stations),
-                'arrival_time' => $faker->time('H:i'),
+                'origin_time' => $faker->time('H:i'),
                 'destination_time' => $faker->time('H:i'),
                 'created_at' => now(),
                 'updated_at' => now(),

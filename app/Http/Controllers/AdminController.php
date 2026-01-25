@@ -211,7 +211,7 @@ class AdminController extends Controller
         ->count();
 
 
-        if($req->arrival_station == $req->destination_station)
+        if($req->origin_station == $req->destination_station)
         {
 
             $notification = array(
@@ -245,9 +245,9 @@ class AdminController extends Controller
         $data=array();
         $data['train_number']=$req->train_number;
         $data['train_name']=$req->train_name;
-        $data['arrival_station']=$req->arrival_station;
+        $data['origin_station']=$req->origin_station;
         $data['destination_station']=$req->destination_station;
-        $data['arrival_time']=$req->arrival_time;
+        $data['origin_time']=$req->origin_time;
         $data['destination_time']=$req->destination_time;
 
         $add=DB::table('trains_tbl')->Insert($data);
@@ -307,9 +307,9 @@ class AdminController extends Controller
         $data=array();
         $data['train_number']=$req->train_number;
         $data['train_name']=$req->train_name;
-        $data['arrival_station']=$req->arrival_station;
+        $data['origin_station']=$req->origin_station;
         $data['destination_station']=$req->destination_station;
-        $data['arrival_time']=$req->arrival_time;
+        $data['origin_time']=$req->origin_time;
         $data['destination_time']=$req->destination_time;
 
         $data['date']=$req->date;

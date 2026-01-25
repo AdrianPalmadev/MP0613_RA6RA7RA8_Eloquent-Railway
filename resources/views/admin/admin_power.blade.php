@@ -285,7 +285,7 @@ input[type=submit]:hover {
     <br>
     <label for="lname">Email</label>
     <br>
-    <input type="text" id="lname" name="arrival_time" placeholder="Enter Train Name.." value="{{ $row->email }}" readonly required>
+    <input type="text" id="lname" name="origin_time" placeholder="Enter Train Name.." value="{{ $row->email }}" readonly required>
 
     <br>
 

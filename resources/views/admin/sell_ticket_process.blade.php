@@ -280,8 +280,8 @@ input[type=submit]:hover {
     @csrf
     <label for="fname">From</label>
     <br>
-    <select name="arrival_station" class="">
-                                        <option value="{{ $row->arrival_station }}" selected readonly>{{ $row->arrival_station }}</option>
+    <select name="origin_station" class="">
+                                        <option value="{{ $row->origin_station }}" selected readonly>{{ $row->origin_station }}</option>
                                         
                                         </select>
     <br>
@@ -306,9 +306,9 @@ input[type=submit]:hover {
     <br>
     <input type="text" id="lname" name="train_number" placeholder="Enter Train Number.." value ="{{ $row->train_number }}" readonly required>
     <br>
-    <label for="lname">Arrival Time</label>
+    <label for="lname">origin Time</label>
     <br>
-    <input type="time" id="lname" name="arrival_time" placeholder="Enter Train Name.." value="{{ $row->arrival_time }}" readonly required>
+    <input type="time" id="lname" name="origin_time" placeholder="Enter Train Name.." value="{{ $row->origin_time }}" readonly required>
 
     <br>
 

@@ -328,13 +328,13 @@ input[type=submit]:hover {
 
     <label for="lname">Ticketing Date & Time</label>
     <br>
-    <input type="text" id="lname" name="arrival_time" placeholder="Enter Train Name.." value="{{ $row->ticketing_date }} , {{ $row->ticketing_time }}" readonly required>
+    <input type="text" id="lname" name="origin_time" placeholder="Enter Train Name.." value="{{ $row->ticketing_date }} , {{ $row->ticketing_time }}" readonly required>
 
     <br>
 
     <label for="lname">Journery Date & Time</label>
     <br>
-    <input type="text" id="lname" name="date" placeholder="Enter Train Number.." value="{{ $row->date }} , {{ $train->arrival_time }}" readonly required>
+    <input type="text" id="lname" name="date" placeholder="Enter Train Number.." value="{{ $row->date }} , {{ $train->origin_time }}" readonly required>
 
     <br>
     

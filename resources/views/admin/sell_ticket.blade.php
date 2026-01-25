@@ -297,9 +297,9 @@ input[type=submit]:hover {
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $count }} </td>
                 <td>{{ $row->train_number }}</td>
                 <td>{{ $row->train_name }}</td>
-                <td>{{ $row->arrival_station }}</td>
+                <td>{{ $row->origin_station }}</td>
                 <td>{{ $row->destination_station }}</td>
-                <td>{{ $row->arrival_time }}</td>
+                <td>{{ $row->origin_time }}</td>
                 <td>{{ $row->destination_time }}</td>
                 <td><a href="{{ Url('/sell-ticket/process/'.$row->id) }}" class="btn btn-success">Sell</a> </td>
 

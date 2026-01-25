@@ -84,7 +84,7 @@ th, td {
 
     <tr>
     <td> Journey Date & Time :</td>
-    <td> {{ $row2->date }} , {{ $train->arrival_time }}</td>
+    <td> {{ $row2->date }} , {{ $train->origin_time }}</td>
     </tr>
 
     <tr>

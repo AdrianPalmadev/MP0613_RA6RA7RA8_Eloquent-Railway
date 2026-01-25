@@ -9,10 +9,10 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-        // Get distinct arrival stations from tickets_tbl
-        $arrival_stations = DB::table('tickets_tbl')
+        // Get distinct origin stations from tickets_tbl
+        $origin_stations = DB::table('tickets_tbl')
             ->distinct()
-            ->pluck('arrival_station')
+            ->pluck('origin_station')
             ->unique()
             ->sort()
             ->values();
@@ -34,7 +34,7 @@ class WelcomeController extends Controller
             ->values();
 
         return view('welcome', [
-            'arrival_stations' => $arrival_stations,
+            'origin_stations' => $origin_stations,
             'destination_stations' => $destination_stations,
             'classes' => $classes
         ]);

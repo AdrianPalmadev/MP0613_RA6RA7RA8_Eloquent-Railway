@@ -139,9 +139,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <span class="form-label">TO</span>
-                                        <select name="arrival_station" class="form-control" required>
+                                        <select name="origin_station" class="form-control" required>
                                             <option value="select" disabled selected>Origin city</option>
-                                            @foreach ($arrival_stations as $station)
+                                            @foreach ($origin_stations as $station)
                                                 <option value="{{ $station }}">{{ $station }}</option>
                                             @endforeach
                                         </select>

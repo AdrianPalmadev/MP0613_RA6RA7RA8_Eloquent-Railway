@@ -50,14 +50,9 @@
 		$user_id=Session::get('user_id');
 	@endphp
 		@if($user_login_status)
-
-
 				<nav class="navbar navbar-inverse">
-	
 				<div class="container-fluid">
-				
 					<div class="navbar-header">
-
 					<a class="navbar-brand" href="{{ Url('/') }}">Bangladesh Railway</a>
 					</div>
 					<ul class="nav navbar-nav">
@@ -67,26 +62,17 @@
 					<li class=""><a href="{{ Url('/verify-ticket') }}">Verify Ticket</a></li>
 					<li class=""><a href="{{ Url('/contact-us')}}">Contact us</a></li>
 					<li class=""><a href="{{ Url('/user/settings') }}">Settings</a></li>
-
-
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 					<li><a href="{{ Url('/logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 					</ul>
 				</div>
 				</nav>
-
-
-
 		@endif
 		@if(!$user_login_status)
-			
 			<nav class="navbar navbar-inverse">
-			
 			<div class="container-fluid">
-			
 			<div class="navbar-header">
-		
 				<a class="navbar-brand" href="{{ Url('/') }}">Bangladesh Railway</a>
 			</div>
 			<ul class="nav navbar-nav">
@@ -168,257 +154,89 @@ color: white;
 }
 
 </style>
-@php 
-
-    $form=Session::get('form');
-    $to=Session::get('to');
-    $class=Session::get('class');
-    $date=Session::get('date');
-
-
-
-@endphp
-<div class="booking-form">
-
-<b><font color="orrange" size="4">FORM &nbsp;&nbsp;: &nbsp;&nbsp;&nbsp; </font>     <font color="white" size="4"><span style="text-transform:uppercase;">{{ $form }} </b></span></font> <br>
-<b><font color="orrange" size="4">TO  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  : &nbsp;&nbsp;&nbsp;&nbsp;</font>        <font color="white" size="4"><span style="text-transform:uppercase;">{{ $to }} </b></span></font> <br>
-<b><font color="orrange" size="4">CLASS &nbsp;: &nbsp;&nbsp;&nbsp;&nbsp;</font>           <font color="white" size="4">{{ $class }} </b></font> <br>
-<b><font color="orrange" size="4">DATE &nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;</font>            <font color="white" size="4">{{ $date }} </b></font>
-
-                </div>
-                <br>
-                <br>
-		<div class="section-center">
-        
-			<div class="container">
-            
+		@php 
+			$form=Session::get('form');
+			$to=Session::get('to');
+			$class=Session::get('class');
+			$date=Session::get('date');
+		@endphp
+		<div class="booking-form">
+			<b><font color="orrange" size="4">FROM &nbsp;&nbsp;: &nbsp;&nbsp;&nbsp; </font>     <font color="white" size="4"><span style="text-transform:uppercase;">{{ $form }} </b></span></font> <br>
+			<b><font color="orrange" size="4">TO  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  : &nbsp;&nbsp;&nbsp;&nbsp;</font>        <font color="white" size="4"><span style="text-transform:uppercase;">{{ $to }} </b></span></font> <br>
+			<b><font color="orrange" size="4">CLASS &nbsp;: &nbsp;&nbsp;&nbsp;&nbsp;</font>           <font color="white" size="4">{{ $class }} </b></font> <br>
+			<b><font color="orrange" size="4">DATE &nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;</font>            <font color="white" size="4">{{ $date }} </b></font>
+		</div>
+		<div class="section-center">        
+			<div class="container">            
 				<div class="row">
-                
-                
-<table id="t01" class="" style="width:100%">
-        <thead>
-            <tr>
-            <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <th>&nbsp;&nbsp;SERIAL</th>
-                <th>TRAIN NUMBER</th>
-                <th>TRAIN NAME</th>
-                <th>STARTING TIME</th>
-                <th>DESTINATION TIME</th>
-				<th> FARE </th>
-                <th>SEAT AVAILABLE </th>
-                <th>ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-        @php
-        $count=1;
-
-	
-
-        @endphp
-        @foreach($route as $row)
-			@php 
-
-			$seat_available=DB::table('tickets_tbl')
-			->where('arrival_station',$form)
-			->where('destination_station',$to)
-			->where('train_number',$row->train_number)
-			->where('class',$class)
-			->where('date',$date)
-			->where('booking_user',null)
-			->count();
-
-
-			$seat_available=DB::table('purchases_tbl')
-			->where('form',$form)
-			->where('to',$to)
-			->where('train_number',$row->train_number)
-			->where('class',$class)
-			->where('date',$date)
-			->where('status','Yes')
-			->count();
-
-			$seat_available=50-$seat_available;
-
-
-			Session::put('$seat_available',$seat_available); 
-
-			$off_day=DB::table('tickets_tbl')
-			->where('arrival_station',$form)
-			->where('destination_station',$to)
-			->where('train_number',$row->train_number)
-			->where('class',$class)
-			->where('date',$date)
-			->count();
-
-
-			if($off_day !=0)
-			{
-
-				$train=DB::table('tickets_tbl')
-			->where('arrival_station',$form)
-			->where('destination_station',$to)
-			->where('train_number',$row->train_number)
-			->where('class',$class)
-			->where('date',$date)
-			->first();
-
-
-
-			}
-			
-
-		
-
-			if($off_day == 0)
-			{
-
-				$seat_available="OFF DAY";
-
-
-
-			}
-
-			@endphp
-			
-            <tr style="">
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $count }} </td>
-                <td>{{ $row->train_number }}</td>
-                <td>{{ $row->train_name }}</td>
-                <td>{{ $row->arrival_time }}</td>
-                <td>{{ $row->destination_time }}</td>
-			<?php
-				if($class=="S_CHAIR")
-				{
-
-					$price=360.00;
-
-				}
-				else if($class=="SNIGDHA")
-				{
-
-					$price=725.00;
-
-
-
-				}
-				else if($class=="SHOVAN")
-				{
-
-					$price=285.00;
-
-
-
-				}
-				else if($class=="AC_S")
-				{
-
-					$price=885.00;
-
-
-
-				}
-				else if($class=="AC_B")
-				{
-
-					$price=1225.00;
-
-
-
-				}
-
-				?>
-				<td>BDT {{ $price }} </td>
-				<td>
-				<?php 
-
-
-				date_default_timezone_set("Asia/Dhaka");
-				$current_date=date("Y-m-d");
-				$current_time=date("H:i");
-
-				$seat=0;
-				$s=0;
-
-				if($seat_available =="OFF DAY")
-				{
-
-					echo"<font color=red>$seat_available</font>";
-					$seat=1;
-					$s=1;
-
-
-				}
-				if($date==$current_date && $s==0)
-				{
-
-
-					if($current_time > $train->arrival_time)
-					{
-		
-						
-						echo"<font color=red>Train Already Left</font>";
-						$seat_available=0;
-						$seat=1;
-		
-		
-					}
-
-
-				}
-				if($seat==0)
-				{
-
-					echo"$seat_available";
-
-				}
-				
-
-				?>
-                </td>
-		
-                <td>
-				
-				@if($seat_available =="OFF DAY" || $seat_available==0)
-			
-
-					<a href="#" class="btn btn-success"  disabled>Purchase</a> 
-
-
-				@endif
-				@if($seat_available > 0)
-				
-
-					<a href="{{ Url('/purchase/'.$row->id) }}" class="btn btn-success"  >Purchase</a> 
-
-				@endif
-				
-				
-				</td>
-				
-                @php
-
-                    $count++;
-
-                @endphp               
-
-            </tr>
-        @endforeach  
-    </table>
-
+					<table id="t01" class="" style="width:100%">
+        				<thead>
+							<tr>
+								<th>SERIAL</th>
+								<th>TRAIN NUMBER</th>
+								<th>TRAIN NAME</th>
+								<th>STARTING TIME</th>
+								<th>DESTINATION TIME</th>
+								<th>FARE </th>
+								<th>SEAT AVAILABLE </th>
+								<th>ACTION</th>
+            				</tr>
+        				</thead>
+
+        				<tbody>
+					@php
+					$count=1;
+					@endphp
+					@foreach($route as $row)											
+						<tr style="">
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $count }} </td>
+							<td>{{ $row->train_number }}</td>
+							<td>{{ $row->train_name }}</td>
+							<td>{{ $row->origin_time }}</td>
+							<td>{{ $row->destination_time }}</td>			
+							<td>BDT {{ $train_list[$count-1]->price }} </td>
+							<td>
+							<?php 
+							date_default_timezone_set("Asia/Dhaka");
+							$current_date=date("Y-m-d");
+							$current_time=date("H:i");
+							$seat=0;
+							$s=0;
+							$seat_available=$train_list[$count-1]->seat_no+1;
+							Session::put('$seat_available',$seat_available); 
+
+							if($date==$current_date && $s==0)
+							{
+								if($current_time > $train->origin_time)
+								{
+									echo"<font color=red>Train Already Left</font>";
+									$seat_available=0;
+									$seat=1;		
+								}
+							}else{
+								echo $seat_available;
+							}
+							?>
+							</td>
+					
+							<td>
+							@if($seat_available =="OFF DAY" || $seat_available==0)
+								<a href="#" class="btn btn-success"  disabled>Purchase</a> 
+							@endif
+
+							@if($seat_available > 0)	
+								<a href="{{ Url('/purchase/'.$row->id) }}" class="btn btn-success"  >Purchase</a> 
+							@endif
+							</td>
+							
+							@php
+								$count++;
+							@endphp               
+						</tr>
+					@endforeach  
+				</table>
 			</div>
 		</div>
 	</div>
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
-
+</body>
 </html>

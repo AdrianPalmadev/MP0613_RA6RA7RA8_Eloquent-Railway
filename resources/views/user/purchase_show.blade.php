@@ -192,7 +192,7 @@ startDate: new Date()
 				@php
 
 				$available=DB::table('tickets_tbl')
-				->where('arrival_station',$form)
+				->where('origin_station',$form)
 				->where('destination_station',$to)
 				->where('class',$class)
 				->where('date',$date)

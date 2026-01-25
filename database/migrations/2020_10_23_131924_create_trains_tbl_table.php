@@ -17,9 +17,9 @@ class CreateTrainsTblTable extends Migration
             $table->id();
             $table->string('train_number');
             $table->string('train_name');
-            $table->string('arrival_station');
+            $table->string('origin_station');
             $table->string('destination_station');
-            $table->string('arrival_time');
+            $table->string('origin_time');
             $table->string('destination_time');
             $table->timestamps();
         });

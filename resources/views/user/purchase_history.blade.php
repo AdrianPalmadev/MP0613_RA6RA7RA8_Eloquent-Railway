@@ -373,7 +373,7 @@ input[type=submit]:hover {
               
                 </td>
              
-                <td>{{ $row->date }}  , {{ $train->arrival_time }}</td>
+                <td>{{ $row->date }}  , {{ $train->origin_time }}</td>
                 <td> {{ $row->tnx_id }} </td>
              
                 <td>
@@ -386,7 +386,7 @@ input[type=submit]:hover {
         if($row->date==$current_date)
         {
 
-            if($current_time > $train->arrival_time)
+            if($current_time > $train->origin_time)
             {
 
                echo "<font color=red><center>Train is left !</center></font>";

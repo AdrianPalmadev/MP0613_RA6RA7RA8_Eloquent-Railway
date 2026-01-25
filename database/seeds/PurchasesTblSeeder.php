@@ -14,23 +14,29 @@ class PurchasesTblSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $stations = ['Dhaka', 'Chittagong', 'Sylhet', 'Rajshahi', 'Khulna', 'Rangpur', 'Comilla', 'Mymensingh'];
         $classes = ['AC', 'AC_B', 'Snigdha', 'S_Chair', 'Shovan'];
+        $trains = DB::table('trains_tbl')->get();
+
+        if ($trains->isEmpty()) {
+            return;
+        }
 
         for ($i = 0; $i < 10; $i++) {
+            $train = $trains->random();
             DB::table('purchases_tbl')->insert([
                 'user_id' => $faker->numerify('#'),
-                'form' => $faker->randomElement($stations),
-                'to' => $faker->randomElement($stations),
-                'date' => $faker->date('Y-m-d'),
+                'form' => $train->origin_station,
+                'to' => $train->destination_station,
+                 'date' => $faker->dateTimeBetween('+1 days', '+9 days')->format('Y-m-d'),
                 'class' => $faker->randomElement($classes),
-                'train_number' => $faker->numerify('T###'),
-                'train_name' => $faker->randomElement(['Suborno Express', 'Parabat Express', 'Mahanagar Express', 'Silk City Express', 'Karnaphuli Express']),
+                'train_number' => $train->train_number,
+                'train_name' => $train->train_name,
                 'seat_number' => $faker->numerify('##'),
                 'ticketing_date' => $faker->date('Y-m-d'),
                 'ticketing_time' => $faker->time('H:i:s'),
                 'tnx_id' => $faker->unique()->numerify('TXN##########'),
-                'status' => $faker->randomElement(['confirmed', 'pending', 'cancelled']),
+                // Match controller logic: 'no' (pending) or 'Yes' (confirmed)
+                'status' => $faker->randomElement(['no', 'Yes']),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

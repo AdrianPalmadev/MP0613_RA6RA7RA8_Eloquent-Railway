@@ -269,7 +269,7 @@ input[type=submit]:hover {
     @csrf
     <label for="fname">From</label>
     <br>
-    <select name="arrival_station" class="">
+    <select name="origin_station" class="">
                                         <option value="select" disabled selected>FROM</option>
                                         <option value="Chittagong">CHITTAGONG</option>
                                         <option value="Dhaka">DHAKA</option>
@@ -295,9 +295,9 @@ input[type=submit]:hover {
     <br>
     <input type="text" id="lname" name="train_number" placeholder="Enter Train Number.." required>
     <br>
-    <label for="lname">Arrival Time</label>
+    <label for="lname">origin Time</label>
     <br>
-    <input type="time" id="lname" name="arrival_time" placeholder="Enter Train Name.." required>
+    <input type="time" id="lname" name="origin_time" placeholder="Enter Train Name.." required>
 
     <br>
 

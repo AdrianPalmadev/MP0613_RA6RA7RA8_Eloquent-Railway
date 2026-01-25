@@ -15,151 +15,123 @@ class GuestController extends Controller
     {
 
         return view('contact_us');
-
-
-
     }
     public function train_show(Request $req)
     {
-
-        if($req->arrival_station==$req->destination_station)
-        {
+        // validation 
+        if ($req->origin_station == $req->destination_station) {
 
             $notification = array(
                 'message' => 'Invalid Route !',
                 'alert-type' => 'error'
             );
-    
-    
+
+
             return back()->with($notification);
-
-
-
         }
-        if($req->arrival_station=="")
-        {
+        if ($req->origin_station == "") {
 
             $notification = array(
                 'message' => 'Invalid Route  !',
                 'alert-type' => 'error'
             );
-    
-    
-            return back()->with($notification);            
 
 
+            return back()->with($notification);
         }
-        if($req->destination_station=="")
-        {
+        if ($req->destination_station == "") {
 
             $notification = array(
                 'message' => 'Invalid Route !',
                 'alert-type' => 'error'
             );
-    
-    
-            return back()->with($notification);            
 
 
+            return back()->with($notification);
         }
-        if($req->class=="")
-        {
+        if ($req->class == "") {
 
             $notification = array(
                 'message' => 'Please any class select !',
                 'alert-type' => 'error'
             );
-    
-    
-            return back()->with($notification);            
 
 
+            return back()->with($notification);
         }
-        
-        $route=DB::table('trains_tbl')
-        ->where('arrival_station',$req->arrival_station)
-        ->where('destination_station',$req->destination_station)
-        ->count();
 
-        if($route == 0)
-        {
+        $route = DB::table('trains_tbl')
+            ->where('origin_station', $req->origin_station)
+            ->where('destination_station', $req->destination_station)
+            ->count();
+
+        if ($route == 0) {
 
             $notification = array(
                 'message' => 'No Train is available !',
                 'alert-type' => 'error'
             );
-    
-    
-            return back()->with($notification); 
 
 
+            return back()->with($notification);
         }
-        $ticket=DB::table('tickets_tbl')
-        ->where('arrival_station',$req->arrival_station)
-        ->where('destination_station',$req->destination_station)
-        ->where('date',$req->date)
-        ->count();
+        $ticket = DB::table('tickets_tbl')
+            ->where('origin_station', $req->origin_station)
+            ->where('destination_station', $req->destination_station)
+            ->where('date', $req->date)
+            ->where('class', operator: $req->class)
+            ->count();
 
-        if($ticket == 0)
-        {
+        if ($ticket == 0) {
 
             $notification = array(
                 'message' => 'No Ticket is available !',
                 'alert-type' => 'error'
             );
-    
-    
-            return back()->with($notification); 
 
 
+            return back()->with($notification);
         }
-        $route=DB::table('trains_tbl')
-        ->where('arrival_station',$req->arrival_station)
-        ->where('destination_station',$req->destination_station)
-        ->get();
 
-        $train_list=DB::table('tickets_tbl')
-        ->where('arrival_station',$req->arrival_station)
-        ->where('destination_station',$req->destination_station)
-        ->where('date',$req->date)
-        ->get();
+        // get values
+        $route = DB::table('trains_tbl')
+            ->where('origin_station', $req->origin_station)
+            ->where('destination_station', $req->destination_station)
+            ->get();
 
-        $seat=DB::table('tickets_tbl')
-        ->where('arrival_station',$req->arrival_station)
-        ->where('destination_station',$req->destination_station)
-        ->where('date',$req->date)
-        ->where('class',$req->class)
-        ->count();
+        $train_list = DB::table('tickets_tbl')
+            ->where('origin_station', $req->origin_station)
+            ->where('destination_station', $req->destination_station)
+            ->where('date', $req->date)
+            ->where('class', operator: $req->class)
+            ->get();
 
-        Session::put('form',$req->arrival_station);
-        Session::put('to',$req->destination_station);
-        Session::put('class',$req->class);
-        Session::put('date',$req->date);
+        Session::put('form', $req->origin_station);
+        Session::put('to', $req->destination_station);
+        Session::put('class', $req->class);
+        Session::put('date', $req->date);
 
 
-        return view('Guest.train_show',compact('route','train_list','seat'));
-
-
+        return view('Guest.train_show', compact('route', 'train_list'));
     }
     public function message(Request $req)
     {
 
-        $data['name']=$req->name;
-        $data['email']=$req->email;
-        $data['message']=$req->message;
+        $data['name'] = $req->name;
+        $data['email'] = $req->email;
+        $data['message'] = $req->message;
 
 
-        $message=DB::table('contact_us_tbl')->Insert($data);
+        $message = DB::table('contact_us_tbl')->Insert($data);
 
 
-        if($message)
-        {
+        if ($message) {
 
             $details5 = [
                 'title' => 'Bangladesh Railway',
-                'body' => ' We will contact with you soon ' ,
+                'body' => ' We will contact with you soon ',
             ];
-           
+
             \Mail::to($req->email)->send(new \App\Mail\MessageEMail($details5));
 
 
@@ -167,63 +139,46 @@ class GuestController extends Controller
                 'message' => 'Succefully Send Message ',
                 'alert-type' => 'success'
             );
-    
-    
-            return back()->with($notification); 
 
 
+            return back()->with($notification);
         }
-
     }
     public function verify_ticket()
     {
 
 
         return view('Guest.Verify_ticket');
-
-
     }
     public function verify_check(Request $req)
     {
 
-        $tnx_id=$req->tnx_id;
+        $tnx_id = $req->tnx_id;
 
-        $verify=DB::table('purchases_tbl')->where('tnx_id',$tnx_id)
-        ->where('status','Yes')
-        ->count();
+        $verify = DB::table('purchases_tbl')->where('tnx_id', $tnx_id)
+            ->where('status', 'Yes')
+            ->count();
 
 
-        if($verify > 0)
-        {
+        if ($verify > 0) {
 
-            
+
             $notification = array(
                 'message' => 'Verified Ticket ! ',
                 'alert-type' => 'success'
             );
-    
-    
-            return back()->with($notification); 
 
 
-
-        }
-        else
-        {
+            return back()->with($notification);
+        } else {
 
             $notification = array(
                 'message' => 'Invalid Ticket ! ',
                 'alert-type' => 'error'
             );
-    
-    
-            return back()->with($notification); 
 
 
+            return back()->with($notification);
         }
-
-
-
-
     }
 }
