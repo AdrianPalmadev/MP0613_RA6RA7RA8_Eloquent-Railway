@@ -1,6 +1,9 @@
 # Eloquent Railway (Laravel)
 
 A simple railway e-ticketing demo built with Laravel and Eloquent ORM. It includes user/admin flows, train and ticket management, purchases, contact messages, and basic payment integration (SSLCommerz).
+<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/3607763e-a820-4d66-a487-65b98560f104" />
+
+
 
 ## Overview
 - User authentication and profile management
