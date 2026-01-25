@@ -138,18 +138,28 @@
 						<form method="post" action="{{ Url('/contact-us/confirm') }}">
 
 						@csrf
+						@if ($errors->any())
+							<div class="alert alert-danger">
+								<ul style="margin-bottom:0;">
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							</div>
+							<br>
+						@endif
 							
 							<div class="row">
 								<div class="col-md-5">
 									<div class="form-group">
 										<span class="form-label">Name</span>
-                                       <input type="text" class="form-control" placeholder="Enter Name" name="name" required>
+									   <input type="text" class="form-control" placeholder="Enter Name" name="name" value="{{ old('name') }}" required>
 									</div>
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
                                     <span class="form-label">Email</span>
-                                       <input type="email" class="form-control" placeholder="Enter Email" name="email" required>
+									   <input type="email" class="form-control" placeholder="Enter Email" name="email" value="{{ old('email') }}" required>
 									</div>
 								</div>
                             </div>
@@ -157,9 +167,7 @@
 								<div class="col-md-4">
 									<div class="form-group">
 										<span class="form-label">Message</span>
-                                        <textarea class="form-control" name="message" rows="4" cols="50" required>
-                                        
-  </textarea>
+										<textarea class="form-control" name="message" rows="4" cols="50" required>{{ old('message') }}</textarea>
 									</div>
 								</div>
 								

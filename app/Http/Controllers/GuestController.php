@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Redirect;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Hash;
 use App\Mail\MessageEmail;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class GuestController extends Controller
 {
