@@ -176,22 +176,30 @@ class UserController extends Controller
         $class = Session::get('class');
         $date = Session::get('date');
 
+        // Join tickets_tbl with trains_tbl to get train details
+        $ticket = DB::table('tickets_tbl')
+            ->join('trains_tbl', 'tickets_tbl.train_number', '=', 'trains_tbl.train_number')
+            ->where('tickets_tbl.id', $id)
+            ->where('tickets_tbl.class', $class)
+            ->where('tickets_tbl.date', $date)
+            ->first();        
+
+        // Extract train info from joined result
+        $train = (object)[
+            'id' => $ticket->id,
+            'train_number' => $ticket->train_number,
+            'train_name' => $ticket->train_name,
+            'origin_station' => $ticket->origin_station,
+            'destination_station' => $ticket->destination_station,
+            'origin_time' => $ticket->origin_time,
+            'destination_time' => $ticket->destination_time
+        ];
+
         Session::put('train_number', $train->train_number);
         Session::put('train_name', $train->train_name);
-
-
-        $ticket = DB::table('tickets_tbl')
-            ->where('train_number', $train->train_number)
-            ->where('class', $class)
-            ->where('seat_no', '1')
-            ->first();
-
         Session::put('price', $ticket->price);
 
         $seat_available = Session::get('Seat_available');
-
-
-
 
         if (!$user_login_status) {
 
@@ -208,22 +216,15 @@ class UserController extends Controller
         $current_date = date("Y-m-d");
         $current_time = date("H:i");
 
-
         if ($date == $current_date) {
-
             if ($current_time > $train->origin_time) {
-
                 $notification = array(
                     'message' => 'Train is left !',
                     'alert-type' => 'error'
                 );
-
-
                 return Redirect::to('/')->with($notification);
             }
         }
-
-
 
         return view('user.purchase_show');
     }

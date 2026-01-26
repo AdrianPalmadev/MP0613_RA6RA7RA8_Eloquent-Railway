@@ -119,40 +119,119 @@ startDate: new Date()
 });
 </script>
 <style>
-#not-active {
-  pointer-events: none;
-  cursor: default;
-  text-decoration: none;
-  color: black;
+body {
+    font-family: 'PT Sans', sans-serif;
 }
-<a href="l
 
-table {
-width: 80%;
+.train-info-header {
+    background: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-table, th, td {
-border: 1px solid black;
-border-collapse: collapse;
+
+.train-info-header p {
+    margin: 8px 0;
+    font-size: 16px;
 }
-th, td {
-padding: 15px;
-text-align: left;
+
+.train-info-header .label-text {
+    color: #ff5722;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 100px;
 }
-#t01 tr:nth-child(even) {
-background-color: #D5F5E3;
+
+.train-info-header .value-text {
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
 }
-#t01 tr:nth-child(odd) {
-background-color: #AEB6BF;
+
+.table-wrapper {
+    margin: 30px auto;
+    max-width: 1200px;
+    padding: 0 15px;
 }
-.vl {
-border-left: 6px solid green;
-height: 260px;
+
+#t01 {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
+
 #t01 th {
-background-color: black;
-color: white;
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: 600;
+    border: none;
 }
 
+#t01 td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+#t01 tbody tr {
+    transition: background-color 0.2s;
+}
+
+#t01 tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#t01 tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+#t01 tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.fare-amount {
+    color: #27ae60;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.seat-count {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.train-left-msg {
+    color: #e74c3c;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.btn-purchase {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+
+.btn-purchase:hover {
+    background-color: #229954;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-purchase:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
 </style>
 		@php 
 			$form=Session::get('form');
@@ -160,24 +239,27 @@ color: white;
 			$class=Session::get('class');
 			$date=Session::get('date');
 		@endphp
-		<div class="booking-form">
-			<b><font color="orrange" size="4">FROM &nbsp;&nbsp;: &nbsp;&nbsp;&nbsp; </font>     <font color="white" size="4"><span style="text-transform:uppercase;">{{ $form }} </b></span></font> <br>
-			<b><font color="orrange" size="4">TO  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  : &nbsp;&nbsp;&nbsp;&nbsp;</font>        <font color="white" size="4"><span style="text-transform:uppercase;">{{ $to }} </b></span></font> <br>
-			<b><font color="orrange" size="4">CLASS &nbsp;: &nbsp;&nbsp;&nbsp;&nbsp;</font>           <font color="white" size="4">{{ $class }} </b></font> <br>
-			<b><font color="orrange" size="4">DATE &nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;</font>            <font color="white" size="4">{{ $date }} </b></font>
+
+		<div class="train-info-header">
+			<p><span class="label-text">FROM:</span> <span class="value-text">{{ $form }}</span></p>
+			<p><span class="label-text">TO:</span> <span class="value-text">{{ $to }}</span></p>
+			<p><span class="label-text">CLASS:</span> <span class="value-text">{{ $class }}</span></p>
+			<p><span class="label-text">DATE:</span> <span class="value-text">{{ $date }}</span></p>
 		</div>
+
 		<div class="section-center">        
 			<div class="container">            
 				<div class="row">
-					<table id="t01" class="" style="width:100%">
+					<div class="table-wrapper">
+					<table id="t01">
         				<thead>
 							<tr>
 								<th>SERIAL</th>
 								<th>TRAIN NUMBER</th>
 								<th>TRAIN NAME</th>
-								<th>STARTING TIME</th>
-								<th>DESTINATION TIME</th>
-								<th>FARE </th>
+								<th>DEPARTURE</th>
+								<th>ARRIVAL</th>
+								<th>FARE</th>
 								<th>SEAT AVAILABLE </th>
 								<th>ACTION</th>
             				</tr>
@@ -187,45 +269,49 @@ color: white;
 					@php
 					$count=1;
 					@endphp
-					@foreach($route as $row)											
-						<tr style="">
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $count }} </td>
-							<td>{{ $row->train_number }}</td>
+					@foreach($train_list as $row)											
+						<tr>
+							<td>{{ $count }}</td>
+							<td><strong>{{ $row->train_number }}</strong></td>
 							<td>{{ $row->train_name }}</td>
 							<td>{{ $row->origin_time }}</td>
 							<td>{{ $row->destination_time }}</td>			
-							<td>BDT {{ $train_list[$count-1]->price }} </td>
+							<td><span class="fare-amount">BDT {{ number_format($row->price, 2) }}</span></td>
 							<td>
-							<?php 
+							@php
 							date_default_timezone_set("Asia/Dhaka");
 							$current_date=date("Y-m-d");
 							$current_time=date("H:i");
 							$seat=0;
 							$s=0;
-							$seat_available=$train_list[$count-1]->seat_no+1;
+							$seat_available=$train_list[$count-1]->seat_no;
 							Session::put('$seat_available',$seat_available); 
 
 							if($date==$current_date && $s==0)
 							{
-								if($current_time > $train->origin_time)
+								if($current_time > $row->origin_time)
 								{
-									echo"<font color=red>Train Already Left</font>";
+									echo '<span class="train-left-msg">Train Already Left</span>';
 									$seat_available=0;
 									$seat=1;		
 								}
-							}else{
-								echo $seat_available;
+								else
+								{
+									echo '<span class="seat-count">'.$seat_available.'</span>';
+								}
 							}
-							?>
+							else
+							{
+								echo '<span class="seat-count">'.$seat_available.'</span>';
+							}
+							@endphp
 							</td>
 					
 							<td>
-							@if($seat_available =="OFF DAY" || $seat_available==0)
-								<a href="#" class="btn btn-success"  disabled>Purchase</a> 
-							@endif
-
-							@if($seat_available > 0)	
-								<a href="{{ Url('/purchase/'.$row->id) }}" class="btn btn-success"  >Purchase</a> 
+							@if($seat_available == 0)
+								<button class="btn btn-purchase" disabled>Unavailable</button> 
+							@else
+								<a href="{{ Url('/purchase/'.$row->id) }}" class="btn btn-purchase">Purchase</a> 
 							@endif
 							</td>
 							
@@ -235,8 +321,10 @@ color: white;
 						</tr>
 					@endforeach  
 				</table>
+				</div>
 			</div>
 		</div>
 	</div>
+</div>
 </body>
 </html>

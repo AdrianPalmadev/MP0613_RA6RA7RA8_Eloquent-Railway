@@ -104,13 +104,13 @@ class GuestController extends Controller
             ->where('destination_station', $req->destination_station)
             ->where('date', $req->date)
             ->where('class', operator: $req->class)
+            ->where('booking_user', operator: null)
             ->get();
 
         Session::put('form', $req->origin_station);
         Session::put('to', $req->destination_station);
         Session::put('class', $req->class);
         Session::put('date', $req->date);
-
 
         return view('Guest.train_show', compact('route', 'train_list'));
     }

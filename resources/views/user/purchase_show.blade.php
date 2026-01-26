@@ -148,9 +148,6 @@ startDate: new Date()
 
 });
 </script>
-
-
-
 		<div class="">
 			<div class="container">
 				<div class="row">
@@ -166,41 +163,19 @@ startDate: new Date()
 					<div class="container">
 					
     <div class="row">
-	
         <div class="form-group">
-		
             <div class="items-collection">
-			
 			@php
-
 				$i=1;
-
 				$form=Session::get('form');
 				$to=Session::get('to');
 				$class=Session::get('class');
 				$date=Session::get('date');
 				$tran_no=Session::get('train_number');
 				$date=Session::get('date');
-
-
-				
-
 			@endphp
 				@while($i<=50)
-
-
 				@php
-
-				$available=DB::table('tickets_tbl')
-				->where('origin_station',$form)
-				->where('destination_station',$to)
-				->where('class',$class)
-				->where('date',$date)
-				->where('seat_no',$i)
-				->where('train_number',$tran_no)
-				->where('booking_user',null)
-				->count();
-
 				$available=DB::table('purchases_tbl')
 				->where('form',$form)
 				->where('to',$to)

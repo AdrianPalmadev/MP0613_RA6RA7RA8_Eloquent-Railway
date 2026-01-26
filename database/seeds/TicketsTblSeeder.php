@@ -17,6 +17,7 @@ class TicketsTblSeeder extends Seeder
         $stations = ['Dhaka', 'Chittagong', 'Sylhet', 'Rajshahi', 'Khulna', 'Rangpur', 'Comilla', 'Mymensingh'];
         $classes = ['AC', 'AC_B', 'Snigdha', 'S_Chair', 'Shovan'];
         $trains = DB::table('trains_tbl')->get();
+        $users = DB::table('users_tbl')->pluck('id')->toArray();
 
         for ($i = 0; $i < 30; $i++) {
             // Pick a real train from trains_tbl so ticket fields match
@@ -30,9 +31,9 @@ class TicketsTblSeeder extends Seeder
                 'origin_time' => $train->origin_time,
                 'destination_time' => $train->destination_time,
                 'class' => $faker->randomElement($classes),
-                'seat_no' => $faker->numerify('##'),
+                'seat_no' => $faker->numberBetween(1, 50),
                 'price' => $faker->randomFloat(2, 300, 3000),
-                'booking_user' => $faker->randomElement([null, $faker->numerify('#')]),
+                'booking_user' => $faker->randomElement(array_merge([null], $users)),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
