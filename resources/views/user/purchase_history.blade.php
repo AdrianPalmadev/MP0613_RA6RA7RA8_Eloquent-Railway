@@ -264,8 +264,8 @@ input[type=submit]:hover {
                 <th>Ticketing Date & Time</th>
                 <th>Train Number</th>
                 <th>Train Name</th>
-                <th>Form</th>
-                <th>TO</th>
+                <th>City departure</th>
+                <th>City destination</th>
                 <th>Class</th>
                 <th>Seat Number</th>
                 <th>Journey Date & Time</th>
